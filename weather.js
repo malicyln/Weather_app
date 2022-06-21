@@ -3,11 +3,6 @@ const input = document.querySelector(".top-banner input");
 const msg = document.querySelector("span.msg");
 const list = document.querySelector(".ajax-section .cities");
 
-// localStorage.setItem(
-//   "apiKey",
-//   EncryptStringAES("b101316ac93eed9678889ac0f4d21741")
-// );
-
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   getWeatherDataFromApi();
@@ -29,6 +24,22 @@ const getWeatherDataFromApi = async () => {
     const { name, main, weather, sys } = response.data;
     let iconUrl = `https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
 
+    //* forEach => array + nodeList
+    //* map, filter, reduce => array
+    const cityListItems = list.querySelectorAll(".city");
+    const cityListItemsArray = Array.from(cityListItems);
+    if (cityListItemsArray.length > 0) {
+      const filteredArray = cityListItemsArray.filter(
+        (cityCard) => cityCard.querySelector("span").innerText == name
+      );
+      if (filteredArray.length > 0) {
+        msg.innerText = "Bu şehir zaten listeye eklenmiş.";
+        setTimeout(() => {
+          msg.innerText = "";
+        }, 4000);
+        return;
+      }
+    }
     const createdLi = document.createElement("li");
     createdLi.classList.add("city");
     const createdLiinnerHTML = `<h2 class="city-name" data-name="${name}, ${
@@ -44,7 +55,12 @@ const getWeatherDataFromApi = async () => {
     </figure>`;
     createdLi.innerHTML = createdLiinnerHTML;
     //* appned vs. prepend
-    list.appendChild(createdLi);
-  } catch (error) {}
+    list.prepend(createdLi);
+  } catch (error) {
+    msg.innerText = "Böyle bir şehir yok.";
+    setTimeout(() => {
+      msg.innerText = "";
+    }, 4000);
+  }
   form.reset();
 };
