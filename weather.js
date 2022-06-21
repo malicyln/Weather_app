@@ -3,6 +3,11 @@ const input = document.querySelector(".top-banner input");
 const msg = document.querySelector("span.msg");
 const list = document.querySelector(".ajax-section .cities");
 
+// localStorage.setItem(
+//   "apiKey",
+//   EncryptStringAES("b101316ac93eed9678889ac0f4d21741")
+// );
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   getWeatherDataFromApi();
