@@ -25,7 +25,26 @@ const getWeatherDataFromApi = async () => {
     // const response = await fetch(url).then((response) => response.json());
     // console.log(response);
     const response = await axios(url);
-    console.log(response.data);
+    // console.log(response.data);
+    const { name, main, weather, sys } = response.data;
+    let iconUrl = `https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
+
+    const createdLi = document.createElement("li");
+    createdLi.classList.add("city");
+    const createdLiinnerHTML = `<h2 class="city-name" data-name="${name}, ${
+      sys.country
+    }">
+         <span>${name}</span>
+         <sup>${sys.country}</sup>
+    </h2>
+    <div class="city-temp">${Math.round(main.temp)}<sup>°C</sup></div>
+    <figure>
+        <img class="city-icon" src="${iconUrl}">
+        <figcaption>${weather[0].description}</figcaption>
+    </figure>`;
+    createdLi.innerHTML = createdLiinnerHTML;
+    //* appned vs. prepend
+    list.appendChild(createdLi);
   } catch (error) {}
   form.reset();
 };
